@@ -14,7 +14,7 @@ int main() {
 
 	al_init();
 	al_init_image_addon();
-
+	al_install_keyboard();
 	ALLEGRO_DISPLAY *screen;
 	ALLEGRO_TIMER *timer;
 	ALLEGRO_EVENT_QUEUE *queue;
@@ -52,11 +52,15 @@ int main() {
 			ALLEGRO_BITMAP *image = pop.getFromRect(current);
 
 			al_clear_to_color(al_map_rgb(255, 255, 255));
-			al_draw_bitmap(image,0,0,0);
+			al_draw_scaled_bitmap(image,0,0, current.getw(), current.geth(),0,0, current.getw()*4, current.geth()*4,0);
 			al_flip_display();
-			animationframe += 1;
-			animationframe = animationframe % size;
 
+			ALLEGRO_KEYBOARD_STATE  keys;
+			al_get_keyboard_state(&keys);
+			if (al_key_down(&keys, ALLEGRO_KEY_SPACE)) {
+				animationframe += 1;
+				animationframe = animationframe % size;
+			}
 		}
 	}
 
